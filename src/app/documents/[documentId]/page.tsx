@@ -1,3 +1,5 @@
+import { Editor } from "./editor";
+
 interface DocumentIDPageProps {
 	params: Promise<{ documentId: string }>;
 }
@@ -5,7 +7,11 @@ interface DocumentIDPageProps {
 const DocumentIDPage = async ({ params }: DocumentIDPageProps) => {
 	const { documentId } = await params;
 
-	return <div>Documents ID: {documentId}</div>;
+	return (
+		<div className="min-h-screen bg-[#FAFBFD]">
+			<Editor />
+		</div>
+	);
 };
 
 export default DocumentIDPage;
