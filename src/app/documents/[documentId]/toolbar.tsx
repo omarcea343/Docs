@@ -3,6 +3,7 @@
 import {
 	BoldIcon,
 	ChevronDownIcon,
+	HighlighterIcon,
 	ItalicIcon,
 	ListTodoIcon,
 	LucideIcon,
@@ -14,12 +15,161 @@ import {
 	UnderlineIcon,
 	Undo2Icon,
 } from "lucide-react";
+import { type ColorResult, TwitterPicker } from "react-color";
 import { type Level } from "@tiptap/extension-heading";
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { useEditorStore } from "@/store/use-editor-store";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+const HighlightColorButton = () => {
+	const { editor } = useEditorStore();
+
+	const value = editor?.getAttributes("highlight").color || "#FFFFFF";
+
+	const onChange = (color: ColorResult) => {
+		editor?.chain().focus().setHighlight({ color: color.hex }).run();
+	};
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+					<HighlighterIcon className="size-4" />
+					<div className="h-0.5 w-full" style={{ backgroundColor: value }} />
+				</button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className="p-0">
+				<TwitterPicker
+					color={value}
+					onChange={onChange}
+					colors={[
+						"#f44336",
+						"#9c27b0",
+						"#673ab7",
+						"#3f51b5",
+						"#2196f3",
+						"#03a9f4",
+						"#00bcd4",
+						"#009688",
+						"#4caf50",
+						"#8bc34a",
+						"#cddc39",
+						"#ffc107",
+						"#ff5722",
+						"#795548",
+						"#607d8b",
+						"#4D4D4D",
+						"#999999",
+						"#F44E3B",
+						"#FE9200",
+						"#FCDC00",
+						"#DBDF00",
+						"#A4DD00",
+						"#68CCCA",
+						"#73D8FF",
+						"#AEA1FF",
+						"#FDA1FF",
+						"#333333",
+						"#808080",
+						"#cccccc",
+						"#B0BC00",
+						"#68BC00",
+						"#16A5A5",
+						"#009CE0",
+						"#7B64FF",
+						"#FA28FF",
+						"#000000",
+						"#666666",
+						"#B3B3B3",
+						"#9F0500",
+						"#C45100",
+						"#FB9E00",
+						"#194D33",
+						"#0C797D",
+						"#653294",
+						"#AB149E",
+					]}
+				/>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+};
+
+const TextColorButton = () => {
+	const { editor } = useEditorStore();
+
+	const value = editor?.getAttributes("textStyle").color || "#000000";
+
+	const onChange = (color: ColorResult) => {
+		editor?.chain().focus().setColor(color.hex).run();
+	};
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+					<span className="text-xs">A</span>
+					<div className="h-0.5 w-full" style={{ backgroundColor: value }} />
+				</button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className="p-0">
+				<TwitterPicker
+					color={value}
+					onChange={onChange}
+					colors={[
+						"#f44336",
+						"#9c27b0",
+						"#673ab7",
+						"#3f51b5",
+						"#2196f3",
+						"#03a9f4",
+						"#00bcd4",
+						"#009688",
+						"#4caf50",
+						"#8bc34a",
+						"#cddc39",
+						"#ffc107",
+						"#ff5722",
+						"#795548",
+						"#607d8b",
+						"#4D4D4D",
+						"#999999",
+						"#F44E3B",
+						"#FE9200",
+						"#FCDC00",
+						"#DBDF00",
+						"#A4DD00",
+						"#68CCCA",
+						"#73D8FF",
+						"#AEA1FF",
+						"#FDA1FF",
+						"#333333",
+						"#808080",
+						"#cccccc",
+						"#B0BC00",
+						"#68BC00",
+						"#16A5A5",
+						"#009CE0",
+						"#7B64FF",
+						"#FA28FF",
+						"#000000",
+						"#666666",
+						"#B3B3B3",
+						"#9F0500",
+						"#C45100",
+						"#FB9E00",
+						"#194D33",
+						"#0C797D",
+						"#653294",
+						"#AB149E",
+					]}
+				/>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+};
 
 const HeadingLevelButton = () => {
 	const { editor } = useEditorStore();
@@ -211,8 +361,8 @@ export const Toolbar = () => {
 			{sections[1].map((item) => (
 				<ToolbarButton key={item.label} {...item} />
 			))}
-			{/* TODO: Text Color */}
-			{/* TODO: Highlight Color */}
+			<TextColorButton />
+			<HighlightColorButton />
 			<Separator orientation="vertical" className="h-6 bg-neutral-300" />
 			{/* TODO: Link */}
 			{/* TODO: Image */}
